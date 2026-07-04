@@ -18,7 +18,7 @@ Take advantage of the powerful editors included in Desktop Editors.
 
 The suite empowers you to create, edit, save, and export text documents, spreadsheets, presentations, PDFs, fill out PDF forms, open diagrams, all while offering additional advanced features such as:
 
-* Connection to the cloud (Moodle, Nextcloud, ownCloud, Seafile, Liferay, kDrive) for real-time collaboration ☁️
+* Connection to the cloud (Nextcloud) for real-time collaboration ☁️
 * AI-powered assistants 🤖
 * Digital signatures ✍️🔏
 * Password protection 🔒🔑
