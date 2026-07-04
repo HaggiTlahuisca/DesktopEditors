@@ -444,9 +444,20 @@ Either download the 'common-files' CI artifact and pass -CommonDir, or rerun wit
         Write-Warning "sccache not found on PATH - building WITHOUT a compiler cache."
     }
     $cmakeArgs += 'desktop-apps/win-linux/'
-    cmake @cmakeArgs
-    Assert-LastExit "CMake configure"
 
+    # vcpkg se confunde detectando el compilador si Cygwin está en el PATH
+    # (convierte "C:/..." en "C;/..." y truena con "Cannot find port").
+    # Quitamos Cygwin del PATH solo para este paso y lo regresamos enseguida,
+    # porque el build sí lo necesita más adelante.
+    $pathConCygwin = $env:PATH
+    $env:PATH = ($env:PATH -split ';' | Where-Object { $_ -ne "$CygwinRoot\bin" }) -join ';'
+    cmake @cmakeArgs
+    $exitConfigure = $LASTEXITCODE
+    $env:PATH = $pathConCygwin
+    $global:LASTEXITCODE = $exitConfigure
+
+    Assert-LastExit "CMake configure"
+    
     # ─────────────────────── 8. CMake Build + Install ───────────────────────
     # Single-config Ninja: build type comes from CMAKE_BUILD_TYPE, so no
     # --config here, and the MSBuild-only /p: flags are gone.
